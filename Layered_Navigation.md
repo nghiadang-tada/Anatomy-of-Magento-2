@@ -38,7 +38,7 @@ First load of an anchor category, before selecting any options to filter by.
 
 * The controller for category pages, `\Magento\Catalog\Controller\Category\View`, checks if layered navigation is enabled for this category and if so, adds custom handles to the layout.
 * The default block for adding layered navigation to a category is `catalog.leftnav`.
-* Both `Magento_Catalog` and `Magento_LayeredNavigation` define blocks with this name, in `htdocs/vendor/magento/module-catalog/view/frontend/layout/catalog_category_view_type_default.xml` and `htdocs/vendor/magento/module-layered-navigation/view/frontend/layout/catalog_category_view_type_layered.xml` respectively.
+* Both `Magento_Catalog` and `Magento_LayeredNavigation` define blocks with this name, in `/vendor/magento/module-catalog/view/frontend/layout/catalog_category_view_type_default.xml` and `/vendor/magento/module-layered-navigation/view/frontend/layout/catalog_category_view_type_layered.xml` respectively.
     * Question: Given these blocks are added to the same container (`sidebar.main`), why don't these blocks conflict?
         * The class defined by both blocks is different
 * The block class for `catalog.leftnav` in `catalog_category_view_type_default.xml` resolves to a virtual type, which extends from `\Magento\LayeredNavigation\Block\Navigation`.
@@ -62,19 +62,19 @@ First load of an anchor category, before selecting any options to filter by.
     * Gets the filtered collection from the layer block (`\Magento\Catalog\Model\Layer\Category` in this case)
     * Sorts the collection by applicable sort orders (Price, Position, etc)
     * Sets the collection to the toolbar block (to ensure that pagination, product counts are correct)
-* `htdocs/vendor/magento/module-catalog/view/frontend/templates/product/list.phtml` gets product collection
+* `/vendor/magento/module-catalog/view/frontend/templates/product/list.phtml` gets product collection
     * Outputs toolbar
     * Outputs product grid (or list)
-* `htdocs/vendor/magento/theme-frontend-luma/Magento_LayeredNavigation/templates/layer/view.phtml`:
+* `/vendor/magento/theme-frontend-luma/Magento_LayeredNavigation/templates/layer/view.phtml`:
     * Checks whether block can be output
     * Outputs number of active filters
     * Calls child block 'state' of type `\Magento\LayeredNavigation\Block\Navigation\State`
-        * `htdocs/vendor/magento/theme-frontend-luma/Magento_LayeredNavigation/templates/layer/state.phtml` Renders currently applied filters
+        * `/vendor/magento/theme-frontend-luma/Magento_LayeredNavigation/templates/layer/state.phtml` Renders currently applied filters
     * Outputs list of filters
         * Each filter has it's own renderer block class and accompanying template
             * Plugin `\Magento\Swatches\Model\Plugin\FilterRenderer::aroundRender` checks if this filter attribute is a swatch attribute and if so, renders a custom block
         * `\Magento\LayeredNavigation\Block\Navigation\FilterRenderer::render` calls the `toHtml` method to render each filter
-        * The default template for each filter is `htdocs/vendor/magento/module-layered-navigation/view/frontend/templates/layer/filter.phtml`
+        * The default template for each filter is `/vendor/magento/module-layered-navigation/view/frontend/templates/layer/filter.phtml`
         * The block class is `\Magento\Catalog\Model\Layer\Filter\Item`
             * Outputs the different options for each filter attribute
             * Outputs the count of each option for each filter attribute
@@ -114,7 +114,7 @@ Magento 2 uses the CatalogSearch module in order to generate the counts of each 
                 * `\Magento\CatalogSearch\Model\Layer\Filter\Attribute::buildOptionData` Detects whether this option reduces the number of products displayed. If not, the filter option is not rendered. If so, a new filter item is created and added to an internal array. This array is built up to contain the frontend label, attribute value and product count for each filter option of this attribute.
 
 #### For filter type 'price'
-* `htdocs/vendor/magento/theme-frontend-luma/Magento_LayeredNavigation/templates/layer/view.phtml:33` eventually calls
+* `/vendor/magento/theme-frontend-luma/Magento_LayeredNavigation/templates/layer/view.phtml:33` eventually calls
     * `\Magento\Catalog\Model\Layer\Filter\AbstractFilter::_initItems`
         * `\Magento\CatalogSearch\Model\Layer\Filter\Category::_getItemsData`: Gets collection from layer model, calls `getFacetedData`
             * `\Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection::getFacetedData`: Renders filters of layer product collection; Returns faceted data from faceted search result for filter
@@ -128,7 +128,7 @@ Magento 2 uses the CatalogSearch module in order to generate the counts of each 
 `\Magento\Catalog\Model\Layer\Resolver`:
 * Is used to determine the type of layer to use for this request: 'category' or 'search'.
 * The types are defined in `\Magento\Catalog\Model\Layer\Resolver`
-* The types are added to a `layersPool` argument which is populated in `htdocs/vendor/magento/module-catalog/etc/di.xml:490` and injected by `di`.
+* The types are added to a `layersPool` argument which is populated in `/vendor/magento/module-catalog/etc/di.xml:490` and injected by `di`.
 * Which opens the possibility of creating a custom type?
 * The resolver returns a layer object of the configured type
 * Both of the default types extend from `\Magento\Catalog\Model\Layer`.
@@ -139,4 +139,4 @@ Magento 2 uses the CatalogSearch module in order to generate the counts of each 
 ## How does the logic differ between the catalog and search results pages?
 
 There are separate layers for both:
-`htdocs/vendor/magento/module-catalog/etc/di.xml:490`
+`/vendor/magento/module-catalog/etc/di.xml:490`
